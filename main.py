@@ -7,15 +7,11 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from typing import Optional
-import logging
 from fastapi import Request
 from fastapi.responses import JSONResponse
 from starlette.middleware.timeout import TimeoutMiddleware
 
 
-
-logging.basicConfig(level=logging.INFO)
-logger = logging.getLogger(__name__)
 
 # Global exception handler
 @app.exception_handler(Exception)
