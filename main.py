@@ -7,6 +7,28 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from typing import Optional
+import logging
+from fastapi import Request
+from fastapi.responses import JSONResponse
+from starlette.middleware.timeout import TimeoutMiddleware
+
+
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# Global exception handler
+@app.exception_handler(Exception)
+async def global_exception_handler(request: Request, exc: Exception):
+    logger.error(f"Unhandled exception: {exc}", exc_info=True)
+    return JSONResponse(
+        status_code=500,
+        content={
+            "detail": "An unexpected error occurred",
+            "error": str(exc)
+        }
+    )
+
 
 # Configurations
 APP_ENVIRONMENT = "live"
@@ -51,18 +73,18 @@ app = FastAPI(
 )
 
 # CORS Middleware with Extensive Configuration
+app.add_middleware(TimeoutMiddleware, seconds=30)
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://127.0.0.1:5500", 
         "https://altransfer.vercel.app", 
-        "*"  # Be cautious with this in production
+        # Add other specific domains
     ],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 # Utility Functions
 def get_access_token():
     """Retrieve access token from Pesapal API"""
