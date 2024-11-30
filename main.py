@@ -5,6 +5,8 @@ import requests
 import random
 import json
 from models import PaymentRequest, TransactionStatusRequest
+import time
+
 
 #Configurations
 APP_ENVIRONMENT = "live"
