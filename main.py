@@ -34,7 +34,16 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
+@app.options("/submit-order")
+async def options_handler():
+    return JSONResponse(
+        headers={
+            "Access-Control-Allow-Origin": "*",
+            "Access-Control-Allow-Methods": "POST, OPTIONS",
+            "Access-Control-Allow-Headers": "Content-Type, Authorization",
+        }
+    )
+    
 class IPNRegistrationRequest(BaseModel):
     url: str
     ipn_notification_type: str = "POST"
