@@ -1,3 +1,4 @@
+import time
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
@@ -5,8 +6,6 @@ import requests
 import random
 import json
 from models import PaymentRequest, TransactionStatusRequest
-import time
-
 
 #Configurations
 APP_ENVIRONMENT = "live"
@@ -93,10 +92,7 @@ async def register_ipn(request: IPNRegistrationRequest):
     ipn_data = response.json()
     return {"ipn_id": ipn_data.get("ipn_id"), "ipn_url": ipn_data.get("url")}
 
-import time
-from fastapi import FastAPI, HTTPException
 
-app = FastAPI()
 
 # Endpoint to submit order and handle transaction status
 @app.post("/submit-order")
@@ -180,7 +176,6 @@ async def submit_order(request: PaymentRequest):
         "status": transaction_status,
         "details": order_response
     }
-
 # # Endpoint to submit order
 # @app.post("/submit-order")
 # async def submit_order(request: PaymentRequest):
